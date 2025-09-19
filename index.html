@@ -1,86 +1,782 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Modern Login Page | AsmrProg</title>
-</head>
+    <title>Document</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.container { max-width: 900px; margin: 40px auto; padding: 24px; background: #fff; border-radius: 9px; box-shadow: 0 4px 16px #0001; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    header h1 { font-size: 2.2rem; margin: 0; }
+    .stats { display: flex; gap: 24px; margin-bottom: 30px; }
+    .stat-card { background: #f1f5f9; border-radius: 8px; padding: 16px 26px; text-align: center; flex: 1; }
+    .stat-card h2 { font-size: 2rem; margin: 0 0 10px 0; }
+    .stat-card span { color: #555; font-size: 1rem; }
+    .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 16px;}
+    .tab { padding: 12px 30px; cursor: pointer; background: none; border: none; outline: none; font-size: 1.1rem; transition: background .2s; }
+    .tab.active { color: #1b91eb; border-bottom: 2px solid #1c92e0; background: #ffe4ee77; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px;}
+    th, td { border: 1px solid #eee; padding: 10px; text-align: center; }
+    td.event { font-weight: bold; color: #fff;}
+    .event-mathematics { background: #1acc14; }
+    .event-physics { background: #1949db; }
+    .event-chemistry { background: #10B981; }
+    /* Modal styles */
+    .modal-bg { display: none; position: fixed; z-index: 99; left: 0; top: 0; width: 100vw; height: 100vh; background: #0007; }
+    .modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 10px; padding: 24px; z-index: 100; width: 330px; box-shadow: 0 8px 32px #2222; }
+    .modal label { display: block; margin-top: 12px; }
+    .modal-actions { margin-top: 16px; text-align: right;}
+    .btn { background: #167deb; color: #fff; border: none; padding: 10px 22px; border-radius: 7px; cursor: pointer; font-size: 1em;}
+    .btn.add { margin-bottom: 0;}
+    .btn.cancel { background: #eee; color: #444; margin-left: 10px;}
+    /* Subjects */
+    .subject-list { margin-top: 16px;}
+    .subject-row { display: flex; align-items: center; background: #f5f5fa; border-radius: 6px; padding: 8px 12px; margin-bottom: 7px;}
+    .subject-color { width:18px;height:18px; border-radius:50%; margin-right:8px;}
+    .subject-name { font-weight:600; margin-right:10px;}
+    .subject-code { font-size:0.92em; color:#555; margin-right:10px;}
+    .subject-actions button { margin-left: 8px;}
+    /* Responsive */
+    @media (max-width:600px) {
+      .container {padding: 9px;}
+      header h1 {font-size: 1.36rem;}
+      .stats {flex-direction:column;}
+      .tabs .tab {padding: 12px 8px;}
+      .modal {width:95vw;}
+    }
+     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e2e6e8 0%, #88c7df 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
 
+    .ig{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+    nav {
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(35,35,65,0.08);
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 20;
+    }
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 26px;
+    }
+    .navbar-logo {
+      color: #218de5;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+    }
+    .navbar-logo i {
+      margin-right: 8px;
+      font-size: 1.8rem;
+    }
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+        margin-left: 40px;
+    }
+    .navbar-links a {
+      text-decoration: none;
+      color: #0b80f5;
+      font-weight: 500;
+      font-size: 1.0em;
+      padding: 12px 18px;
+      border-radius: 8px;
+      transition: background .15s, color .20s;
+      margin-left: 2px;
+      margin-right: 2px;
+    }
+    .navbar-links a:hover, .navbar-links a.active {
+      background: #0864ba22;
+      background-color: #097aeb;
+      color: #fefcfc;
+    }
+    .navbar-signin {
+      margin-left: auto;
+      padding-left: 22px;
+    }
+    .signin-btn {
+      background: linear-gradient(90deg, #137ae8 60%, #5ab2da 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-weight: 600;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #ffadc630;
+      transition: background .2s, box-shadow .2s;
+    }
+    .signin-btn:hover {
+      background-color: white;
+      box-shadow: 0 6px 18px #dfe5ec50;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      text-align: center;
+      background-color: #1577ee;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    .features-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8px 0 40px 0;
+    }
+    .features-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  margin-top: 35px;
+}
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px 20px 12px 20px;
+  box-shadow: 0 6px 20px rgba(12, 97, 215, 0.13), 0 2px 7px rgba(72, 141, 225, 0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 13px;
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: 0 14px 40px rgba(21, 103, 225, 0.19), 0 4px 16px rgba(73, 138, 217, 0.19);
+}
+.icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 13px;
+}
+.card h3 {
+  font-size: 1.25rem;
+  color: #1d7dd7;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+}
+.desc {
+  font-size: 1.01rem;
+  line-height: 1.6;
+  color: #0f0f0f;
+  text-align: center;
+  width: 95%;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+@media (max-width:480px) {
+  .features-container { gap: 20px; }
+  .card { padding: 14px 7px 5px 7px; }
+  .feature { margin-bottom: 6px; }
+  .icon { width: 36px; height: 36px; }
+}
+
+
+.typewriter {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0a83ec;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  text-transform: uppercase;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+  
+      border-right: 3px solid #ff3c78; /* blinking cursor */
+      padding-right: 5px;
+      white-space: nowrap;
+      text-align: center;
+       
+      position: relative;
+      letter-spacing: 2px;
+      
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+   
+   @keyframes blink {
+      from, to { border-color: transparent; }
+      50% { border-color: #8bd6e7; }
+    }
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
+</head>
 <body>
 
-    <div class="container" id="container">
-        <div class="form-container sign-up">
-            <form>
-                <h1>Create Account</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-
-                </div>
-                <span>or use your email for registeration</span>
-                <input type="text" placeholder="Name">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                 <select class="user-type" name="user-type">
-            <option value="" disabled selected>Select User Type</option>
-            <option value="student">Student</option>
-            <option value="faculty">Faculty</option>
-            <option value="admin">Admin</option>
-        </select>
-                <button>Sign Up</button>
-            </form>
-        </div>
-        <div class="form-container sign-in">
-            <form>
-                <div class="logobox">
-                <img class="logo" src="light.jpeg" alt="">
-                </div>
-                <h1>Sign In</h1>
-                <div class="social-icons">
-                    <select class="user-type" name="user-type" >
-            <option value="" disabled selected>Select User Type</option>
-            <option value="student">Student</option>
-            <option value="faculty">Faculty</option>
-            <option value="admin">Admin</option>
-        </select>
-                </div>
-                <span>or use your email password</span>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                <a href="#">Forget Your Password?</a>
-                <button  onclick="
-                 document.querySelector('.loader').style.opacity = '1';
-                
-                ">Sign In</button>
-            </form>
-        </div>
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site features</p>
-                    <button class="hidden" id="login">Sign In</button>
-                </div>
-                <div class="toggle-panel toggle-right">
-                 
-                    <h1 id="msg">Hello, User!</h1>
-                    <p>Manage Your Organization efficiently <br>Slotify – "Where Time Finds Its Place"</p>
-                    <button class="hidden" id="register">Sign Up</button>
-                    <div class="loader-container">
-        <div class="loader"></div>
+  <nav>
+    <div class="navbar-container">
+      <span class="navbar-logo">
+        <img class="ig" src="logo.jpeg" alt="">
+        Slotify
+      </span>
+      <div class="navbar-links">
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Timetables</a>
+        <a href="#">Teachers</a>
+        <a href="#">Subject</a>
+        <a href="#">Settings</a>
+      </div>
+      <div class="navbar-signin">
+        <button class="signin-btn"  onclick="window.location.href='index.html'"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+      </div>
     </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
+  </nav>
 
-    <script src="script.js"></script>
+
+
+
+
+
+
+
+
+  <h1>Slotify Features</h1>
+  <h2 class="typewriter"></h2>
+  <div class="features-container">
+  <div class="feature">
+    <div class="features-container">
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><rect x="6" y="10" width="36" height="32" rx="4" fill="#ffe4ee"/><rect x="6" y="10" width="36" height="32" rx="4" stroke="#ff3c78" stroke-width="2"/><rect x="14" y="22" width="8" height="8" rx="2" fill="#ffadc6"/><rect x="26" y="22" width="8" height="8" rx="2" fill="#b5fffc"/></svg>
+      </div>
+      <h3>Dynamic Timetable</h3>
+    </div>
+    <div class="desc">
+      Auto-adjusts schedules instantly when a teacher is absent or a class is shifted.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="8" fill="#fff8e2"/><circle cx="24" cy="18" r="8" stroke="#ff3c78" stroke-width="2"/><ellipse cx="24" cy="36" rx="14" ry="8" fill="#ffc673"/><ellipse cx="24" cy="36" rx="14" ry="8" stroke="#ff3c78" stroke-width="2"/></svg>
+      </div>
+      <h3>Role-Based Dashboards</h3>
+    </div>
+    <div class="desc">
+      Separate views for Admin, Faculty, and Students — tailored to their needs.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#b5fffc"/><circle cx="24" cy="24" r="20" stroke="#222" stroke-width="2"/><rect x="22" y="12" width="4" height="13" rx="2" fill="#ff3c78"/><rect x="28" y="26" width="2" height="8" rx="1" fill="#222"/></svg>
+      </div>
+      <h3>Clash-Free Scheduling</h3>
+    </div>
+    <div class="desc">
+      Prevents double-booking of classrooms, teachers, or student groups automatically.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><rect x="8" y="14" width="32" height="20" rx="8" fill="#ffadc6"/><rect x="8" y="14" width="32" height="20" rx="8" stroke="#ff3c78" stroke-width="2"/><path d="M24 24v8" stroke="#222" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="4" fill="#fff8e2"/></svg>
+      </div>
+      <h3>Leave Handling</h3>
+    </div>
+    <div class="desc">
+      Smart adjustments when faculty take leave — inserts substitutes or self-study slots.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="23" rx="11" ry="14" fill="#ffe4ee"/><ellipse cx="24" cy="23" rx="11" ry="14" stroke="#ff3c78" stroke-width="2"/><rect x="19" y="37" width="10" height="5" rx="2.5" fill="#ffc673"/></svg>
+      </div>
+      <h3>Smart Suggestions</h3>
+    </div>
+    <div class="desc">
+      Recommends best free slots for labs, extra classes, or revision sessions.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M24 6a18 18 0 1018 18" stroke="#12abb9" stroke-width="2" fill="none"/><circle cx="38" cy="24" r="3" fill="#b5fffc"/><path d="M32 24l9 0" stroke="#ff3c78" stroke-linecap="round" stroke-width="2"/></svg>
+      </div>
+      <h3>Cross-Platform Sync</h3>
+    </div>
+    <div class="desc">
+      Integrates with Google Calendar, Outlook & sends reminders via WhatsApp/SMS.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M24 40c4 0 8-4 8-8V21c0-5-3-9-8-9s-8 4-8 9v11c0 4 4 8 8 8z" fill="#ffe4ee"/><path d="M24 40c4 0 8-4 8-8V21c0-5-3-9-8-9s-8 4-8 9v11c0 4 4 8 8 8z" stroke="#ff3c78" stroke-width="2"/></svg>
+      </div>
+      <h3>Dynamic Notifications</h3>
+    </div>
+    <div class="desc">
+      Students & teachers get real-time alerts for sudden timetable changes.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><rect x="12" y="32" width="6" height="10" rx="2" fill="#b5fffc"/><rect x="22" y="24" width="6" height="18" rx="2" fill="#ffadc6"/><rect x="32" y="20" width="6" height="22" rx="2" fill="#ffc673"/></svg>
+      </div>
+      <h3>Analytics & Insights</h3>
+    </div>
+    <div class="desc">
+      Provides insights on workload, busiest days, and attendance trends.
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M15 34l18-14" stroke="#ff3c78" stroke-width="2"/><circle cx="15" cy="34" r="6" fill="#ffe4ee"/><circle cx="33" cy="20" r="6" fill="#b5fffc"/><circle cx="24" cy="12" r="6" fill="#ffc673"/></svg>
+      </div>
+      <h3>Export & Share</h3>
+    </div>
+    <div class="desc">
+      Download or share timetables as PDF, Excel, or direct link with one click.
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div>
+        <h1>Timetable Scheduler</h1>
+        <span style="color:#666;">Manage your weekly class schedule</span>
+      </div>
+      <button class="btn add" onclick="openEventDialog()">Add Class</button>
+    </header>
+    <!-- Statistics -->
+    <div class="stats">
+      <div class="stat-card"><h2 id="stat-events">3</h2><span>Classes</span></div>
+      <div class="stat-card"><h2 id="stat-subjects">5</h2><span>Subjects</span></div>
+    </div>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('timetable')">Timetable</button>
+      <button class="tab" onclick="switchTab('subjects')">Subjects</button>
+      <button class="tab" onclick="switchTab('settings')">Settings</button>
+    </div>
+    <!-- Tab Contents -->
+    <div class="tab-content active" id="tab-timetable">
+      <table id="timetable-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>09:00</th>
+            <th>10:00</th>
+            <th>11:00</th>
+          </tr>
+        </thead>
+        <tbody id="timetable-tbody"></tbody>
+      </table>
+    </div>
+    <div class="tab-content" id="tab-subjects">
+      <div class="subject-list" id="subject-list"></div>
+      <button class="btn add" onclick="openSubjectDialog()">Add Subject</button>
+    </div>
+    <div class="tab-content" id="tab-settings">
+      <div style="text-align:center; padding:40px; color:#999;">
+        <svg height="64" width="64"><circle cx="32" cy="32" r="28" fill="#eee"/><text x="32" y="42" font-size="30" text-anchor="middle" fill="#bbb">&#9881;</text></svg>
+        <h3>Settings Coming Soon</h3>
+        <p>Additional settings and preferences will be available here.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Modal for Add/Edit Event -->
+  <div class="modal-bg" id="event-modal-bg">
+    <form id="event-modal" class="modal" onsubmit="saveEvent(event)">
+      <h3 id="event-modal-title">Add Class</h3>
+      <label>
+        Subject:
+        <select id="event-subject" required></select>
+      </label>
+      <label>
+        Day:
+        <select id="event-day" required>
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+        </select>
+      </label>
+      <label>
+        Time:
+        <select id="event-time" required>
+          <option value="09:00">09:00</option>
+          <option value="10:00">10:00</option>
+          <option value="11:00">11:00</option>
+        </select>
+      </label>
+      <label>
+        Duration (hrs):
+        <input type="number" id="event-duration" value="1" min="1" max="4" required>
+      </label>
+      <label>
+        Room:
+        <input type="text" id="event-room" placeholder="Room / Lab">
+      </label>
+      <label>
+        Teacher:
+        <input type="text" id="event-teacher" placeholder="Faculty">
+      </label>
+      <div class="modal-actions">
+        <button type="submit" class="btn">Save</button>
+        <button type="button" class="btn cancel" onclick="closeEventDialog()">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <!-- Modal for Add/Edit Subject -->
+  <div class="modal-bg" id="subject-modal-bg">
+    <form id="subject-modal" class="modal" onsubmit="saveSubject(event)">
+      <h3 id="subject-modal-title">Add Subject</h3>
+      <label>
+        Name:
+        <input type="text" id="subject-name" required>
+      </label>
+      <label>
+        Code:
+        <input type="text" id="subject-code" required>
+      </label>
+      <label>
+        Color:
+        <input type="color" id="subject-color" value="#3B82F6" required>
+      </label>
+      <div class="modal-actions">
+        <button type="submit" class="btn">Save</button>
+        <button type="button" class="btn cancel" onclick="closeSubjectDialog()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  
+  
+
+
+
+    
+    <script>
+ // Initial data
+    let events = [
+      { id: '1', subject: 'COA', time: '09:00', duration: 1, day: 'Monday', color: '#47d42eff', room: 'Room 328', teacher: 'Varsha Pandey' },
+      { id: '2', subject: 'EM3',    time: '10:00', duration: 1, day: 'Monday', color: '#a02121ff', room: 'Lab 334', teacher: 'BP Deshmukh' },
+      { id: '3', subject: 'DSGT',  time: '11:00', duration: 1, day: 'Tuesday', color: '#8025dbff', room: 'Lab 328', teacher: 'Rekha Rathore' }
+    ];
+    let subjects = [
+      { id: '1', name: 'Mathematics', color: '#3B82F6', code: 'MATH101' },
+      { id: '2', name: 'Physics', color: '#EF4444', code: 'PHYS101' },
+      { id: '3', name: 'Chemistry', color: '#10B981', code: 'CHEM101' },
+      { id: '4', name: 'Biology', color: '#F59E0B', code: 'BIO101' },
+      { id: '5', name: 'English', color: '#8B5CF6', code: 'ENG101' }
+    ];
+
+    // State for editing
+    let editingEvent = null;
+    let editingSubject = null;
+
+    // Tabs logic
+    function switchTab(tab) {
+      ['timetable','subjects','settings'].forEach(t => {
+        document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+      });
+      let tabBtns = document.querySelectorAll('.tab');
+      tabBtns.forEach((btn, idx) => btn.className = 'tab' + (btn.innerText.toLowerCase() === tab ? ' active' : ''));
+    }
+
+    // Render timetable
+    function renderTimetable() {
+      const tbody = document.getElementById('timetable-tbody');
+      tbody.innerHTML = '';
+      const days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+      const times = ['09:00','10:00','11:00'];
+      for (let day of days) {
+        let tr = document.createElement('tr');
+        let tdDay = document.createElement('td');
+        tdDay.textContent = day;
+        tr.appendChild(tdDay);
+        for (let time of times) {
+          let td = document.createElement('td');
+          let event = events.find(e => e.day === day && e.time === time);
+          if (event) {
+            td.className = 'event event-' + event.subject.toLowerCase();
+            td.style.background = event.color;
+            td.innerHTML = `${event.subject}<br><span style="font-size:0.9em;">${event.room||''}<br>${event.teacher||''}</span>
+              <br>
+              <button onclick="editEvent('${event.id}')">Edit</button>
+              <button onclick="deleteEvent('${event.id}')">Delete</button>`;
+          }
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+      document.getElementById('stat-events').textContent = events.length;
+    }
+
+    // Render subject list
+    function renderSubjects() {
+      const list = document.getElementById('subject-list');
+      list.innerHTML = '';
+      for (let subject of subjects) {
+        let div = document.createElement('div');
+        div.className = 'subject-row';
+        div.innerHTML = `<span class="subject-color" style="background:${subject.color}"></span>
+          <span class="subject-name">${subject.name}</span>
+          <span class="subject-code">${subject.code}</span>
+          <span class="subject-actions">
+            <button class="btn" style="padding:4px 12px;" onclick="editSubject('${subject.id}')">Edit</button>
+            <button class="btn cancel" style="padding:4px 12px;" onclick="deleteSubject('${subject.id}')">Delete</button>
+          </span>`;
+        list.appendChild(div);
+      }
+      document.getElementById('stat-subjects').textContent = subjects.length;
+    }
+
+    // Populate subject selector in event modal
+    function populateSubjectOptions() {
+      const select = document.getElementById('event-subject');
+      select.innerHTML = '';
+      for (let subject of subjects) {
+        let opt = document.createElement('option');
+        opt.value = subject.name;
+        opt.textContent = subject.name;
+        select.appendChild(opt);
+      }
+    }
+
+    // Modal logic for events
+    function openEventDialog(editId) {
+      populateSubjectOptions();
+      document.getElementById('event-modal-title').textContent = editId ? 'Edit Class' : 'Add Class';
+      document.getElementById('event-modal-bg').style.display = 'block';
+      editingEvent = null;
+      if (editId) {
+        let event = events.find(e => e.id === editId);
+        if (event) {
+          editingEvent = event;
+          document.getElementById('event-subject').value = event.subject;
+          document.getElementById('event-day').value = event.day;
+          document.getElementById('event-time').value = event.time;
+          document.getElementById('event-duration').value = event.duration;
+          document.getElementById('event-room').value = event.room||'';
+          document.getElementById('event-teacher').value = event.teacher||'';
+        }
+      } else {
+        document.getElementById('event-subject').value = subjects[0].name;
+        document.getElementById('event-day').value = 'Monday';
+        document.getElementById('event-time').value = '09:00';
+        document.getElementById('event-duration').value = 1;
+        document.getElementById('event-room').value = '';
+        document.getElementById('event-teacher').value = '';
+      }
+    }
+    function closeEventDialog() {
+      document.getElementById('event-modal-bg').style.display = 'none';
+    }
+    function saveEvent(e) {
+      e.preventDefault();
+      const subject = document.getElementById('event-subject').value;
+      const day = document.getElementById('event-day').value;
+      const time = document.getElementById('event-time').value;
+      const duration = parseInt(document.getElementById('event-duration').value);
+      const room = document.getElementById('event-room').value;
+      const teacher = document.getElementById('event-teacher').value;
+      const subjectObj = subjects.find(s => s.name === subject);
+      const color = subjectObj ? subjectObj.color : '#999';
+      if (editingEvent) {
+        editingEvent.subject = subject;
+        editingEvent.day = day;
+        editingEvent.time = time;
+        editingEvent.duration = duration;
+        editingEvent.room = room;
+        editingEvent.teacher = teacher;
+        editingEvent.color = color;
+      } else {
+        events.push({
+          id: Date.now().toString(),
+          subject, day, time, duration, room, teacher, color
+        });
+      }
+      closeEventDialog();
+      renderTimetable();
+    }
+    function editEvent(id) { openEventDialog(id);}
+    function deleteEvent(id) {
+      events = events.filter(ev => ev.id !== id);
+      renderTimetable();
+    }
+
+    // Modal logic for subjects
+    function openSubjectDialog(editId) {
+      document.getElementById('subject-modal-title').textContent = editId ? 'Edit Subject' : 'Add Subject';
+      document.getElementById('subject-modal-bg').style.display = 'block';
+      editingSubject = null;
+      if (editId) {
+        let subject = subjects.find(s => s.id === editId);
+        if (subject) {
+          editingSubject = subject;
+          document.getElementById('subject-name').value = subject.name;
+          document.getElementById('subject-code').value = subject.code;
+          document.getElementById('subject-color').value = subject.color;
+        }
+      } else {
+        document.getElementById('subject-name').value = '';
+        document.getElementById('subject-code').value = '';
+        document.getElementById('subject-color').value = '#3B82F6';
+      }
+    }
+    function closeSubjectDialog() {
+      document.getElementById('subject-modal-bg').style.display = 'none';
+    }
+    function saveSubject(e) {
+      e.preventDefault();
+      const name = document.getElementById('subject-name').value;
+      const code = document.getElementById('subject-code').value;
+      const color = document.getElementById('subject-color').value;
+      if (editingSubject) {
+        editingSubject.name = name;
+        editingSubject.code = code;
+        editingSubject.color = color;
+        // update matching events
+        events.forEach(ev => {
+          if (ev.subject === editingSubject.name) {
+            ev.color = color;
+          }
+        });
+      } else {
+        subjects.push({
+          id: Date.now().toString(), name, code, color
+        });
+      }
+      renderSubjects();
+      renderTimetable();
+      closeSubjectDialog();
+    }
+    function editSubject(id) {openSubjectDialog(id);}
+    function deleteSubject(id) {
+      const subj = subjects.find(s => s.id === id);
+      if (!subj) return;
+      events = events.filter(ev => ev.subject !== subj.name);
+      subjects = subjects.filter(s => s.id !== id);
+      renderSubjects();
+      renderTimetable();
+    }
+
+    // Initialize page
+    renderTimetable();
+    renderSubjects();
+
+    // Click anywhere outside modal to close
+    window.onclick = function(event) {
+      if (event.target === document.getElementById('event-modal-bg')) closeEventDialog();
+      if (event.target === document.getElementById('subject-modal-bg')) closeSubjectDialog();
+    }
+
+
+
+     const texts = [
+      " Created by Team HexaCore ",
+     " Scheduling made simple.",
+      "Dynamic timetables.",
+       "No more clashes. No more chaos.",
+     "Teachers on leave? We’ve got it covered.",
+    "Smart. Fast. Reliable.",
+     "Because time deserves better management.",
+    ];
+
+    let count = 0;   // which text
+    let index = 0;   // which character
+    let currentText = "";
+    let isDeleting = false;
+    const speed = 100; // typing speed
+
+    function type() {
+      currentText = texts[count];
+      let displayed = document.querySelector(".typewriter");
+
+      if (!isDeleting) {
+        displayed.textContent = currentText.substring(0, index++);
+      } else {
+        displayed.textContent = currentText.substring(0, index--);
+      }
+
+      if (!isDeleting && index === currentText.length) {
+        isDeleting = true;
+        setTimeout(type, 1500); // pause before deleting
+        return;
+      } else if (isDeleting && index === 0) {
+        isDeleting = false;
+        count = (count + 1) % texts.length; // next text
+      }
+
+      setTimeout(type, isDeleting ? speed / 2 : speed);
+    }
+
+    type();
+    </script>
 </body>
-
 </html>
