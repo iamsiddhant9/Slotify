@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard - Timetable Scheduler</title>
+    <style>
+        
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f9;
+  color: #333;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #0f7ce9;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: white;
+  transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+  color: #18a1dc;
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+.main h1 {
+  margin-bottom: 20px;
+}
+
+/* Timetable */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: center;
+}
+
+th {
+  background: #139fef;
+  color: white;
+}
+
+td {
+  background: #fff;
+}
+
+/* Form */
+.form-container {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-container label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.form-container input,
+.form-container select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-container button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #128ddf;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form-container button:hover {
+  background: #16a085;
+}
+
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Dashboard</h2>
+      <ul>
+        <li><a href="#">Time Table</a></li>
+        <li><a href="#">Assignments</a></li>
+        <li><a href="#">Attendance</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <h1>Student Timetable Scheduler</h1>
+
+      <!-- Timetable -->
+      <table id="timetable">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Period 1</th>
+            <th>Period 2</th>
+            <th>Period 3</th>
+            <th>Period 4</th>
+            <th>Period 5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monday</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Tuesday</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Wednesday</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Thursday</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Friday</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Saturday</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Form -->
+      <div class="form-container">
+        <h3>Add / Update Class</h3>
+        <label for="day">Day:</label>
+        <select id="day">
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+        </select>
+
+        <label for="period">Period:</label>
+        <select id="period">
+          <option value="1">Period 1</option>
+          <option value="2">Period 2</option>
+          <option value="3">Period 3</option>
+          <option value="4">Period 4</option>
+          <option value="5">Period 5</option>
+        </select>
+
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" placeholder="Enter Subject" />
+
+        <button onclick="addClass()">Add Class</button>
+      </div>
+    </div>
+
+    <script>
+        function addClass() {
+    const day = document.getElementById("day").value;
+    const period = document.getElementById("period").value;
+    const subject = document.getElementById("subject").value;
+
+    if (subject.trim() === "") {
+        alert("Please enter a subject!");
+        return;
+    }
+
+    // Get timetable
+    const table = document.getElementById("timetable");
+    const rows = table.getElementsByTagName("tr");
+
+    // Loop through rows to find the correct day
+    for (let i = 1; i < rows.length; i++) {
+        const rowDay = rows[i].cells[0].innerText;
+        if (rowDay === day) {
+            // Convert the period value to a number to use as an index
+            const periodIndex = parseInt(period);
+            if (!isNaN(periodIndex) && periodIndex >= 1 && periodIndex <= 5) {
+                rows[i].cells[periodIndex].innerText = subject;
+            } else {
+                alert("Invalid period selected.");
+            }
+        }
+    }
+
+    // Clear input after adding
+    document.getElementById("subject").value = "";
+}
+  
+
+    </script>
+  </body>
+</html>
