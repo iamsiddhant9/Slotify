@@ -263,7 +263,7 @@
         <a href="#">Settings</a>
       </div>
       <div class="navbar-signin">
-        <button class="signin-btn"  onclick="window.location.href='login.html'"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;Sign In</button>
+        <button class="signin-btn"  onclick="window.location.href='login.html'"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
       </div>
     </div>
   </nav>
@@ -402,22 +402,26 @@
 
 
   <div class="container">
+    <!-- Header -->
     <header>
       <div>
         <h1>Timetable Scheduler</h1>
         <span style="color:#666;">Manage your weekly class schedule</span>
       </div>
-      
+      <button class="btn add" onclick="openEventDialog()">Add Class</button>
     </header>
+    <!-- Statistics -->
     <div class="stats">
       <div class="stat-card"><h2 id="stat-events">3</h2><span>Classes</span></div>
       <div class="stat-card"><h2 id="stat-subjects">5</h2><span>Subjects</span></div>
     </div>
+    <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" onclick="switchTab('timetable')">Timetable</button>
       <button class="tab" onclick="switchTab('subjects')">Subjects</button>
       <button class="tab" onclick="switchTab('settings')">Settings</button>
     </div>
+    <!-- Tab Contents -->
     <div class="tab-content active" id="tab-timetable">
       <table id="timetable-table">
         <thead>
@@ -443,6 +447,7 @@
       </div>
     </div>
   </div>
+  <!-- Modal for Add/Edit Event -->
   <div class="modal-bg" id="event-modal-bg">
     <form id="event-modal" class="modal" onsubmit="saveEvent(event)">
       <h3 id="event-modal-title">Add Class</h3>
@@ -486,6 +491,7 @@
       </div>
     </form>
   </div>
+  <!-- Modal for Add/Edit Subject -->
   <div class="modal-bg" id="subject-modal-bg">
     <form id="subject-modal" class="modal" onsubmit="saveSubject(event)">
       <h3 id="subject-modal-title">Add Subject</h3>
@@ -559,7 +565,10 @@
           if (event) {
             td.className = 'event event-' + event.subject.toLowerCase();
             td.style.background = event.color;
-            td.innerHTML = `${event.subject}<br><span style="font-size:0.9em;">${event.room||''}<br>${event.teacher||''}</span>`;
+            td.innerHTML = `${event.subject}<br><span style="font-size:0.9em;">${event.room||''}<br>${event.teacher||''}</span>
+              <br>
+              <button onclick="editEvent('${event.id}')">Edit</button>
+              <button onclick="deleteEvent('${event.id}')">Delete</button>`;
           }
           tr.appendChild(td);
         }

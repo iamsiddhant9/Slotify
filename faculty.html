@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Faculty Dashboard</title>
+   <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 0;
+  background: #2c3e50;
+  color: white;
+  overflow: hidden;
+  transition: width 0.3s;
+  flex-shrink: 0;
+}
+.sidebar.open {
+  width: 220px;
+}
+.sidebar .logo {
+  padding: 20px;
+  text-align: center;
+}
+.sidebar .menu {
+  list-style: none;
+  padding: 0;
+}
+.sidebar .menu li {
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.3s;
+}
+.sidebar .menu li:hover,
+.sidebar .menu li.active {
+  background: #34495e;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #ddd;
+}
+.menu-icon {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+.faculty-name {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+.hero .card {
+  flex: 1;
+  min-width: 150px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  font-size: 16px;
+}
+
+.hero:hover {
+  cursor: pointer;
+}
+
+/* Dashboard content */
+.dashboard-content {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+.dashboard-content .card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th,
+td {
+  padding: 10px;
+  border: 1px solid #eee;
+  text-align: center;
+}
+th {
+  background: #1e8de7;
+  color: white;
+}
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+select,
+textarea,
+button {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+button {
+  background: #1280db;
+  color: white;
+  border: 2px solid #1280db;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+button:hover {
+  background: #d1e2f4;
+  color: #1280db;
+  border-color: #1280db;
+}
+
+   </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">
+        <h2>Faculty</h2>
+      </div>
+      <ul class="menu">
+        <li class="active">
+          <i class="fa-solid fa-book"></i> Assigned Classes
+        </li>
+        <li><i class="fa-solid fa-right-left"></i> Request Swap</li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <i class="fa-solid fa-bars menu-icon" id="menu-btn"></i>
+        <span class="faculty-name">Faculty Dashboard</span>
+      </header>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="card">📚 Classes Overview</div>
+        <div class="card">🔄 Swap Requests</div>
+        <div class="card">🕒 Schedule</div>
+      </section>
+
+      <!-- Content Section (Assigned Classes & Request Swap) -->
+      <section class="dashboard-content">
+        <div class="card" id="assigned-classes">
+          <h2>Assigned Classes</h2>
+          <table>
+            <tr>
+              <th>Class</th>
+              <th>Subject</th>
+              <th>Time</th>
+              <th>Day</th>
+            </tr>
+            <tr>
+              <td>CS101</td>
+              <td>Data Structures</td>
+              <td>10:00 AM - 11:00 AM</td>
+              <td>Monday</td>
+            </tr>
+            <tr>
+              <td>CS205</td>
+              <td>Operating Systems</td>
+              <td>12:00 PM - 1:00 PM</td>
+              <td>Tuesday</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card" id="request-swap">
+          <h2>Request Swap</h2>
+          <form>
+            <label for="current-class">Your Class:</label>
+            <select id="current-class">
+              <option>CS101 - Data Structures</option>
+              <option>CS205 - Operating Systems</option>
+            </select>
+
+            <label for="swap-with">Swap With:</label>
+            <select id="swap-with">
+              <option>CS401 - Database</option>
+              <option>CS510 - Networking</option>
+            </select>
+
+            <label for="reason">Reason:</label>
+            <textarea id="reason" placeholder="Enter reason..."></textarea>
+            <button type="submit">Submit Request</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --light: #f6f6f9;
+      --primary: #1976D2;
+      --light-primary: #CFE8FF;
+      --grey: #eee;
+      --dark-grey: #AAAAAA;
+      --dark: #363949;
+      --danger: #D32F2F;
+      --light-danger: #FECDD3;
+      --warning: #FBC02D;
+      --light-warning: #FFF2C6;
+      --success: #388E3C;
+      --light-success: #BBF7D0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .bx {
+      font-size: 1.7rem;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    html {
+      overflow-x: hidden;
+    }
+
+    body.dark {
+      --light: #2d2d2d;
+      --grey: #3a3a3a;
+      --dark: #f8f9fa;
+      --primary: #4fc3f7;
+      --light-primary: #1e3a8a;
+      --light-warning: #7c2d12;
+      --light-success: #14532d;
+      --light-danger: #7f1d1d;
+    }
+
+    body {
+      background: var(--grey);
+      overflow-x: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: var(--light);
+      width: 230px;
+      height: 100%;
+      z-index: 2000;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidebar.close {
+      width: 60px;
+    }
+
+    /* Updated logo styling */
+    .sidebar .logo-name {
+      font-size: 24px;
+      font-weight: 700;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      color: var(--primary);
+      z-index: 500;
+      padding: 20px;
+      box-sizing: content-box;
+      gap: 12px;
+      position: relative;
+    }
+
+    /* Light mode logo */
+    .logo-light {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-dark {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Complex colorful logo for light mode */
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      position: relative;
+    }
+
+    .calendar-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .calendar-body {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4CAF50 0%, #81C784 50%, #2196F3 100%);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Spiral rings at top */
+    .spiral-ring {
+      position: absolute;
+      top: 3px;
+      width: 4px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .left-spiral {
+      left: 8px;
+      background: linear-gradient(to bottom, #FF9800, #FF5722);
+    }
+
+    .center-spiral {
+      left: 16px;
+      background: linear-gradient(to bottom, #4CAF50, #8BC34A);
+    }
+
+    .right-spiral {
+      left: 24px;
+      background: linear-gradient(to bottom, #2196F3, #03DAC6);
+    }
+
+    /* Calendar header */
+    .calendar-header {
+      position: absolute;
+      top: 14px;
+      left: 4px;
+      right: 4px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 1px;
+    }
+
+    /* Calendar grid */
+    .calendar-grid {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 16px;
+      height: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 1px;
+    }
+
+    .grid-cell {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 1px;
+    }
+
+    /* Clock overlay */
+    .clock-overlay {
+      position: absolute;
+      left: 4px;
+      top: 18px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .clock-face {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .clock-hand {
+      position: absolute;
+      background: #333;
+      border-radius: 1px;
+      transform-origin: bottom center;
+      left: 50%;
+      bottom: 50%;
+    }
+
+    .hour-hand {
+      width: 1px;
+      height: 6px;
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    .minute-hand {
+      width: 1px;
+      height: 8px;
+      transform: translateX(-50%) rotate(90deg);
+    }
+
+    .clock-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 2px;
+      background: #333;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Graduation cap */
+    .graduation-cap {
+      position: absolute;
+      top: -3px;
+      right: 6px;
+      z-index: 10;
+    }
+
+    .cap-square {
+      width: 14px;
+      height: 14px;
+      background: linear-gradient(135deg, #2196F3, #1565C0);
+      border-radius: 2px;
+      transform: perspective(20px) rotateX(15deg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .cap-square::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, rgba(255,255,255,0.3), transparent);
+      border-radius: 2px;
+    }
+
+    .cap-tassel {
+      position: absolute;
+      top: 12px;
+      right: 2px;
+      width: 1px;
+      height: 6px;
+      background: #FFC107;
+      border-radius: 1px;
+    }
+
+    .cap-tassel::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      right: -1px;
+      width: 3px;
+      height: 2px;
+      background: #FFC107;
+      border-radius: 1px;
+    }
+
+    /* Dark mode logo */
+    .logo-dark-icon {
+      width: 42px;
+      height: 42px;
+      position: relative;
+    }
+
+    .clock-circle {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4CAF50, #FF9800);
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clock-circle::before {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #2d2d2d;
+      border-radius: 50%;
+    }
+
+    .clock-hand-dark {
+      position: absolute;
+      background: #fff;
+      border-radius: 1px;
+      transform-origin: bottom center;
+    }
+
+    .clock-hand-dark.hour {
+      width: 2px;
+      height: 8px;
+      transform: rotate(45deg);
+      z-index: 2;
+    }
+
+    .clock-hand-dark.minute {
+      width: 1px;
+      height: 10px;
+      transform: rotate(90deg);
+      z-index: 2;
+    }
+
+    .sidebar .logo-name span {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    /* Dark mode logo display */
+    body.dark .logo-light {
+      display: none;
+    }
+
+    body.dark .logo-dark {
+      display: flex;
+    }
+
+    body.dark .logo-dark span {
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .sidebar.close .logo-name span {
+      opacity: 0;
+    }
+
+    .sidebar .side-menu {
+      width: 100%;
+      margin-top: 48px;
+    }
+
+    .sidebar .side-menu:last-child {
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .side-menu li {
+      height: 48px;
+      background: transparent;
+      margin-left: 6px;
+      border-radius: 48px 0 0 48px;
+      padding: 4px;
+    }
+
+    .sidebar .side-menu li.active {
+      background: var(--grey);
+      position: relative;
+    }
+
+    .sidebar .side-menu li.active::before {
+      content: "";
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      top: -40px;
+      right: 0;
+      box-shadow: 20px 20px 0 var(--grey);
+      z-index: -1;
+    }
+
+    .sidebar .side-menu li.active::after {
+      content: "";
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      bottom: -40px;
+      right: 0;
+      box-shadow: 20px -20px 0 var(--grey);
+      z-index: -1;
+    }
+
+    .sidebar .side-menu li a {
+      width: 100%;
+      height: 100%;
+      background: var(--light);
+      display: flex;
+      align-items: center;
+      border-radius: 48px;
+      font-size: 16px;
+      color: var(--dark);
+      white-space: nowrap;
+      overflow-x: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar .side-menu li.active a {
+      color: var(--success);
+    }
+
+    .sidebar.close .side-menu li a {
+      width: calc(48px - (4px * 2));
+      transition: all 0.3s ease;
+    }
+
+    .sidebar .side-menu li a .bx {
+      min-width: calc(60px - ((4px + 6px) * 2));
+      display: flex;
+      font-size: 1.6rem;
+      justify-content: center;
+    }
+
+    .sidebar .side-menu li a.logout {
+      color: var(--danger);
+    }
+
+    /* Content */
+    .content {
+      position: relative;
+      width: calc(100% - 230px);
+      left: 230px;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar.close ~ .content {
+      width: calc(100% - 60px);
+      left: 60px;
+    }
+
+    .content nav {
+      height: 56px;
+      background: var(--light);
+      padding: 0 24px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      grid-gap: 24px;
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    .content nav a {
+      color: var(--dark);
+    }
+
+    .content nav .bx.bx-menu {
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    .content nav .notif {
+      font-size: 20px;
+      position: relative;
+    }
+
+    .content nav .notif .count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      background: var(--danger);
+      border-radius: 50%;
+      color: var(--light);
+      border: 2px solid var(--light);
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content nav .profile .profile-icon {
+      width: 36px;
+      height: 36px;
+      background: #1e5f8b;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .content nav .profile .profile-icon:hover {
+      background: #1a5378;
+      transform: scale(1.05);
+    }
+
+    /* Dark mode profile icon */
+    body.dark .content nav .profile .profile-icon {
+      background: #4a90c2;
+    }
+
+    body.dark .content nav .profile .profile-icon:hover {
+      background: #5ba0d2;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: var(--dark);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-toggle:hover {
+      background: var(--grey);
+      transform: rotate(180deg);
+    }
+
+    .sidebar,
+    .content nav,
+    .admin-card {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Main Content */
+    .content main {
+      width: 100%;
+      padding: 36px 24px;
+      height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content main .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .content main .header .left h1 {
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    /* Admin container that takes full remaining space */
+    .admin-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+      height: 100%;
+    }
+
+    .admin-card {
+      padding: 32px 24px;
+      background: var(--light);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .admin-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-card .bx {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      font-size: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .admin-card:nth-child(1) .bx {
+      background: var(--light-primary);
+      color: var(--primary);
+    }
+
+    .admin-card:nth-child(2) .bx {
+      background: var(--light-warning);
+      color: var(--warning);
+    }
+
+    .admin-card:nth-child(3) .bx {
+      background: var(--light-success);
+      color: var(--success);
+    }
+
+    .admin-card:nth-child(4) .bx {
+      background: var(--light-danger);
+      color: var(--danger);
+    }
+
+    .admin-card .info h3 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.2;
+    }
+
+    .admin-card .info p {
+      font-size: 14px;
+      color: #ffffff;
+      margin-top: 4px;
+      opacity: 0.9;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+
+      .content {
+        width: calc(100% - 200px);
+        left: 200px;
+      }
+
+      .admin-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      .admin-card {
+        padding: 24px 20px;
+      }
+
+      .admin-card .bx {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+
+      .admin-card .info h3 {
+        font-size: 20px;
+      }
+    }
+
+    @media screen and (max-width: 576px) {
+      .sidebar.close {
+        width: 60px;
+      }
+
+      .sidebar.close ~ .content {
+        width: calc(100% - 60px);
+        left: 60px;
+      }
+
+      .admin-container {
+        gap: 12px;
+      }
+
+      .admin-card {
+        padding: 20px 16px;
+        gap: 16px;
+      }
+
+      .admin-card .bx {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+      }
+
+      .admin-card .info h3 {
+        font-size: 18px;
+      }
+    }
+  </style>
+  <title>Admin Dashboard | Slotify</title>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo-name">
+      <div class="logo-light">
+        <div class="logo-icon">
+          <div class="calendar-container">
+            <!-- Calendar base with gradient -->
+            <div class="calendar-body">
+              <!-- Calendar rings/spirals -->
+              <div class="spiral-ring left-spiral"></div>
+              <div class="spiral-ring center-spiral"></div>
+              <div class="spiral-ring right-spiral"></div>
+              
+              <!-- Calendar grid -->
+              <div class="calendar-header"></div>
+              <div class="calendar-grid">
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+              </div>
+              
+              <!-- Clock overlay -->
+              <div class="clock-overlay">
+                <div class="clock-face"></div>
+                <div class="clock-hand hour-hand"></div>
+                <div class="clock-hand minute-hand"></div>
+                <div class="clock-center"></div>
+              </div>
+            </div>
+            
+            <!-- Graduation cap -->
+            <div class="graduation-cap">
+              <div class="cap-square"></div>
+              <div class="cap-tassel"></div>
+            </div>
+          </div>
+        </div>
+        <span>Slotify</span>
+      </div>
+      <div class="logo-dark">
+        <div class="logo-dark-icon">
+          <div class="clock-circle">
+            <div class="clock-hand-dark hour"></div>
+            <div class="clock-hand-dark minute"></div>
+          </div>
+        </div>
+        <span>SLOTIFY</span>
+      </div>
+    </div>
+
+    <ul class="side-menu">
+      <li class="active"><a href="#"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+      <li><a href="#"><i class='bx bx-analyse'></i>Analytics</a></li>
+      <li><a href="#"><i class='bx bx-group'></i>Users</a></li>
+      <li><a href="#"><i class='bx bx-cog'></i>Settings</a></li>
+    </ul>
+
+    <ul class="side-menu">
+      <li>
+        <a href="#" class="logout">
+          <i class='bx bx-log-out-circle'></i>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <nav>
+      <form action="#">
+        <div class="form-input"></div>
+      </form>
+      <button class="theme-toggle" id="theme-toggle">
+        <i class='bx bx-sun' id="theme-icon"></i>
+      </button>
+      <a href="#" class="notif">
+        <i class='bx bx-bell'></i>
+        <span class="count">12</span>
+      </a>
+      <a href="#" class="profile">
+        <div class="profile-icon">
+          <i class='bx bx-user'></i>
+        </div>
+      </a>
+    </nav>
+
+    <main>
+      <div class="header">
+        <div class="left">
+          <h1>Admin Dashboard</h1>
+        </div>
+      </div>
+
+      <!-- Updated admin container that takes full space -->
+      <div class="admin-container">
+        <div class="admin-card">
+          <i class='bx bx-calendar'></i>
+          <span class="info">
+            <h3>Generate Timetable</h3>
+            <p>Create a new timetable</p>
+          </span>
+        </div>
+        
+        <div class="admin-card">
+          <i class='bx bx-calendar-check'></i>
+          <span class="info">
+            <h3>Approve Timetable</h3>
+            <p>Review and approve timetables</p>
+          </span>
+        </div>
+        
+        <div class="admin-card">
+          <i class='bx bx-bar-chart'></i>
+          <span class="info">
+            <h3>View Reports</h3>
+            <p>Analyze workload and resource allocation</p>
+          </span>
+        </div>
+        
+        <div class="admin-card">
+          <i class='bx bx-transfer'></i>
+          <span class="info">
+            <h3>Approve Swap</h3>
+            <p>Approve lecture swap request</p>
+          </span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const sideLinks = document.querySelectorAll('.sidebar .side-menu li a:not(.logout)');
+    sideLinks.forEach(item => {
+        const li = item.parentElement;
+        item.addEventListener('click', () => {
+            sideLinks.forEach(i => {
+                i.parentElement.classList.remove('active');
+            });
+            li.classList.add('active');
+        });
+    });
+
+    const menuBar = document.querySelector('.content nav .bx.bx-menu');
+    const sideBar = document.querySelector('.sidebar');
+
+    if (menuBar) {
+        menuBar.addEventListener('click', () => {
+            sideBar.classList.toggle('close');
+        });
+    }
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth < 768) {
+            sideBar.classList.add('close');
+        } else {
+            sideBar.classList.remove('close');
+        }
+    });
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+
+    // Check for saved theme or default to light mode
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    body.classList.toggle('dark', savedTheme === 'dark');
+    updateThemeIcon();
+
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        const isDark = body.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+        const isDark = body.classList.contains('dark');
+        themeIcon.className = isDark ? 'bx bx-moon' : 'bx bx-sun';
+    }
+  </script>
+</body>
+</html>
