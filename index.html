@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slotify Timetable Scheduler</title>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 *{
     margin: 0;
     padding: 0;
@@ -14,256 +14,205 @@
     font-weight: 400;
     font-style: normal;
 }
-.container { max-width: 900px; margin: 40px auto; padding: 24px; background: #fff; border-radius: 9px; box-shadow: 0 4px 16px #0001; }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    header h1 { font-size: 2.2rem; margin: 0; }
-    .stats { display: flex; gap: 24px; margin-bottom: 30px; }
-    .stat-card { background: #f1f5f9; border-radius: 8px; padding: 16px 26px; text-align: center; flex: 1; }
-    .stat-card h2 { font-size: 2rem; margin: 0 0 10px 0; }
-    .stat-card span { color: #555; font-size: 1rem; }
-    .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 16px;}
-    .tab { padding: 12px 30px; cursor: pointer; background: none; border: none; outline: none; font-size: 1.1rem; transition: background .2s; }
-    .tab.active { color: #1b91eb; border-bottom: 2px solid #1c92e0; background: #ffe4ee77; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    table { width: 100%; border-collapse: collapse; margin-top: 14px;}
-    th, td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
-    td.event { font-weight: bold; color: #fff; position: relative; } /* Added position: relative */
-    .event-mathematics { background: #1acc14; }
-    .event-physics { background: #1949db; }
-    .event-chemistry { background: #10B981; }
-    /* Modal styles */
-    .modal-bg { display: none; position: fixed; z-index: 99; left: 0; top: 0; width: 100vw; height: 100vh; background: #0007; }
-    .modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 10px; padding: 24px; z-index: 100; width: 330px; box-shadow: 0 8px 32px #2222; }
-    .modal label { display: block; margin-top: 12px; }
-    .modal-actions { margin-top: 16px; text-align: right;}
-    .btn { background: #167deb; color: #fff; border: none; padding: 10px 22px; border-radius: 7px; cursor: pointer; font-size: 1em;}
-    .btn.add { margin-bottom: 0;}
-    .btn.cancel { background: #eee; color: #444; margin-left: 10px;}
-    /* New button styles for timetable */
-    .event-actions .btn {
-        padding: 2px 8px; 
-        font-size: 0.8em; 
-        margin: 4px 2px 0 2px;
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        color: #333; /* Default dark color for contrast */
-        font-weight: 500;
-        transition: background 0.1s;
-    }
-    .event-actions .btn:hover {
-        background: #fff;
-        color: #167deb;
-    }
-    .event-actions .btn.delete-btn {
-        color: #dc3545;
-    }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e2e6e8 0%, #88c7df 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+/* --- Layout & Container --- */
+.container { 
+    max-width: 900px; 
+    margin: 40px auto; 
+    padding: 24px; 
+    background: #fff; 
+    border-radius: 9px; 
+    box-shadow: 0 4px 16px #0001; 
+}
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+header h1 { font-size: 2.2rem; margin: 0; }
 
-    /* Subjects */
-    .subject-list { margin-top: 16px;}
-    .subject-row { display: flex; align-items: center; background: #f5f5fa; border-radius: 6px; padding: 8px 12px; margin-bottom: 7px;}
-    .subject-color { width:18px;height:18px; border-radius:50%; margin-right:8px;}
-    .subject-name { font-weight:600; margin-right:10px;}
-    .subject-code { font-size:0.92em; color:#555; margin-right:10px;}
-    .subject-actions button { margin-left: 8px;}
-    /* Responsive */
-    @media (max-width:600px) {
-        .container {padding: 9px;}
-        header h1 {font-size: 1.36rem;}
-        .stats {flex-direction:column;}
-        .tabs .tab {padding: 12px 8px;}
-        .modal {width:95vw;}
-    }
-      body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #e2e6e8 0%, #88c7df 100%);
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-      }
+/* --- Stats --- */
+.stats { display: flex; gap: 24px; margin-bottom: 30px; }
+.stat-card { background: #f1f5f9; border-radius: 8px; padding: 16px 26px; text-align: center; flex: 1; }
+.stat-card h2 { font-size: 2rem; margin: 0 0 10px 0; }
+.stat-card span { color: #555; font-size: 1rem; }
 
-      .ig{
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          margin-right: 10px;
-      }
-      nav {
-        background: #fff;
-        box-shadow: 0 2px 12px rgba(35,35,65,0.08);
-        position: sticky;
-        top: 0;
-        width: 100%;
-        z-index: 20;
-      }
-      .navbar-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 26px;
-      }
-      .navbar-logo {
-        color: #218de5;
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin-top: 6px;
-        display: flex;
-        align-items: center;
-      }
-      .navbar-logo i {
-        margin-right: 8px;
-        font-size: 1.8rem;
-      }
-      .navbar-links {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-          margin-left: 40px;
-      }
-      .navbar-links a {
-        text-decoration: none;
-        color: #0b80f5;
-        font-weight: 500;
-        font-size: 1.0em;
-        padding: 12px 18px;
-        border-radius: 8px;
-        transition: background .15s, color .20s;
-        margin-left: 2px;
-        margin-right: 2px;
-      }
-      .navbar-links a:hover, .navbar-links a.active {
-        background: #0864ba22;
-        background-color: #097aeb;
-        color: #fefcfc;
-      }
-      .navbar-signin {
-        margin-left: auto;
-        padding-left: 22px;
-      }
-      .signin-btn {
-        background: linear-gradient(90deg, #137ae8 60%, #5ab2da 100%);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 18px;
-        font-weight: 600;
-        font-size: 1em;
-        cursor: pointer;
-        box-shadow: 0 2px 8px #ffadc630;
-        transition: background .2s, box-shadow .2s;
-      }
-      .signin-btn:hover {
-        background-color: white;
-        box-shadow: 0 6px 18px #dfe5ec50;
-      }
+/* --- Tabs --- */
+.tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 16px;}
+.tab { padding: 12px 30px; cursor: pointer; background: none; border: none; outline: none; font-size: 1.1rem; transition: background .2s; }
+.tab.active { color: #1b91eb; border-bottom: 2px solid #1c92e0; background: #ffe4ee77; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-      h1 {
-        font-size: 3rem;
-        font-weight: 700;
-        text-align: center;
-        background-color: #1577ee;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        position: relative;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        animation: glow 2s ease-in-out infinite alternate;
-      }
-      .features-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-        gap: 28px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 8px 0 40px 0;
-      }
-      .features-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 28px;
+/* --- Timetable Table --- */
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+table { width: 100%; min-width: 550px; border-collapse: collapse; margin-top: 14px;}
+th, td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
+td.event { font-weight: bold; color: #fff; position: relative; }
+
+/* Event Colors (Examples) */
+.event-coa { background: #47d42eff; }
+.event-em3 { background: #a02121ff; }
+.event-dsgt { background: #8025dbff; }
+
+/* Timetable Action Buttons */
+.event-actions .btn {
+    padding: 2px 8px; 
+    font-size: 0.8em; 
+    margin: 4px 2px 0 2px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #333; 
+    font-weight: 500;
+    transition: background 0.1s;
+}
+.event-actions .btn:hover {
+    background: #fff;
+    color: #167deb;
+}
+.event-actions .btn.delete-btn {
+    color: #dc3545;
+}
+
+/* --- Modals & Buttons --- */
+.modal-bg { display: none; position: fixed; z-index: 99; left: 0; top: 0; width: 100vw; height: 100vh; background: #0007; }
+.modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 10px; padding: 24px; z-index: 100; width: 330px; box-shadow: 0 8px 32px #2222; }
+.modal label { display: block; margin-top: 12px; }
+.modal-actions { margin-top: 16px; text-align: right;}
+.btn { background: #167deb; color: #fff; border: none; padding: 10px 22px; border-radius: 7px; cursor: pointer; font-size: 1em;}
+.btn.add { margin-bottom: 0;}
+.btn.cancel { background: #eee; color: #444; margin-left: 10px;}
+
+/* --- Subjects List --- */
+.subject-list { margin-top: 16px;}
+.subject-row { display: flex; align-items: center; background: #f5f5fa; border-radius: 6px; padding: 8px 12px; margin-bottom: 7px;}
+.subject-color { width:18px;height:18px; border-radius:50%; margin-right:8px;}
+.subject-name { font-weight:600; margin-right:10px;}
+.subject-code { font-size:0.92em; color:#555; margin-right:10px;}
+.subject-actions button { margin-left: 8px;}
+
+/* --- Navbar --- */
+.ig{ width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
+nav { background: #fff; box-shadow: 0 2px 12px rgba(35,35,65,0.08); position: sticky; top: 0; width: 100%; z-index: 20; }
+.navbar-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; }
+.navbar-logo { color: #218de5; font-size: 1.6rem; font-weight: 700; margin-top: 6px; display: flex; align-items: center; }
+.navbar-links { display: flex; align-items: center; gap: 7px; margin-left: 40px; }
+.navbar-links a { text-decoration: none; color: #0b80f5; font-weight: 500; font-size: 1.0em; padding: 12px 18px; border-radius: 8px; transition: background .15s, color .20s; margin-left: 2px; margin-right: 2px; }
+.navbar-links a:hover, .navbar-links a.active { background-color: #097aeb; color: #fefcfc; }
+.navbar-signin { margin-left: auto; padding-left: 22px; }
+.signin-btn { background: linear-gradient(90deg, #137ae8 60%, #5ab2da 100%); color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-weight: 600; font-size: 1em; cursor: pointer; box-shadow: 0 2px 8px #ffadc630; transition: background .2s, box-shadow .2s; }
+
+/* --- Headings & Typewriter Effect --- */
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    background-color: #1577ee;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+.typewriter {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0a83ec;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    border-right: 3px solid #ff3c78; 
+    padding-right: 5px;
+    white-space: nowrap;
+    text-align: center;
+    letter-spacing: 2px;
+    margin: 10px auto;
+    width: fit-content;
+}
+@keyframes glow { 
+    from { text-shadow: 0 0 5px rgba(21, 119, 238, 0.4); } 
+    to { text-shadow: 0 0 10px rgba(21, 119, 238, 0.8), 0 0 15px rgba(21, 119, 238, 0.6); } 
+}
+
+/* --- Features Grid (Retained structure) --- */
+.features-container {
+    display: flex; /* Changed from grid to flex for simplicity here, as only one "feature" div is present */
+    justify-content: center;
     max-width: 1100px;
-    margin: 0 auto;
-    margin-top: 35px;
+    margin: 35px auto 0 auto;
 }
 .feature {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.card {
-    background: #fff;
-    border-radius: 18px;
-    padding: 28px 20px 12px 20px;
-    box-shadow: 0 6px 20px rgba(12, 97, 215, 0.13), 0 2px 7px rgba(72, 141, 225, 0.07);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 13px;
-    transition: box-shadow 0.2s;
-}
-.card:hover {
-    box-shadow: 0 14px 40px rgba(21, 103, 225, 0.19), 0 4px 16px rgba(73, 138, 217, 0.19);
-}
-.icon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 13px;
-}
-.card h3 {
-    font-size: 1.25rem;
-    color: #1d7dd7;
-    font-weight: bold;
-    text-align: center;
-    margin: 0;
-}
-.desc {
-    font-size: 1.01rem;
-    line-height: 1.6;
-    color: #0f0f0f;
-    text-align: center;
-    width: 95%;
-    margin: 0 auto;
-    margin-bottom: 10px;
-}
-@media (max-width:480px) {
-    .features-container { gap: 20px; }
-    .card { padding: 14px 7px 5px 7px; }
-    .feature { margin-bottom: 6px; }
-    .icon { width: 36px; height: 36px; }
+    width: 100%; /* Ensure it takes full available width */
 }
 
+/* --- RESPONSIVE STYLES (Mobile View) --- */
+@media (max-width: 900px) {
+    .container {
+        margin: 20px auto; 
+    }
+}
 
-.typewriter {
+@media (max-width: 600px) {
+    .container {
+        padding: 9px;
+        margin: 10px auto;
+    }
+    header h1 {
+        font-size: 1.36rem;
+    }
+    .stats {
+        flex-direction: column; /* Stack stats cards */
+        gap: 10px;
+    }
+    .tabs .tab {
+        padding: 12px 8px; 
+        font-size: 1rem;
+    }
+    .modal {
+        width: 95vw;
+    }
+
+    /* Navbar adjustments for narrow screens */
+    .navbar-container {
+        flex-wrap: wrap; 
+        padding: 10px 15px; 
+    }
+    .navbar-links {
+        order: 3; 
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+        justify-content: space-around; 
+        overflow-x: auto; 
+    }
+    .navbar-links a {
+        padding: 8px 10px;
+        font-size: 0.9em;
+        white-space: nowrap; 
+    }
+    .navbar-signin {
+        padding-left: 0;
+    }
+    .signin-btn {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+    
+    h1 {
         font-size: 2rem;
-        font-weight: 700;
-        color: #0a83ec;
-    font-family: "Roboto", sans-serif;
-    font-optical-sizing: auto;
-    text-transform: uppercase;
-    font-style: normal;
-    font-variation-settings:
-      "wdth" 100;
-    
-        border-right: 3px solid #ff3c78; /* blinking cursor */
-        padding-right: 5px;
-        white-space: nowrap;
-        text-align: center;
-        
-        position: relative;
-        letter-spacing: 2px;
-        
-        animation: glow 2s ease-in-out infinite alternate;
-      }
-
-    
-      @keyframes blink {
-        from, to { border-color: transparent; }
-        50% { border-color: #8bd6e7; }
-      }
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+        margin-top: 15px;
+    }
+    .typewriter {
+        font-size: 1.3rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -271,7 +220,7 @@
     <nav>
         <div class="navbar-container">
             <span class="navbar-logo">
-                <img class="ig" src="logo.jpeg" alt="">
+                <span class="ig" style="background: url('logo.jpeg') center/cover; display: inline-block;"></span>
                 Slotify
             </span>
             <div class="navbar-links">
@@ -282,95 +231,78 @@
                 <a href="#">About Us</a>
             </div>
             <div class="navbar-signin">
-                <button class="signin-btn" 	onclick="window.location.href='login.html'"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;Sign In</button>
+                <button class="signin-btn" onclick="window.location.href='login.html'">Sign In</button>
             </div>
         </div>
     </nav>
 
     <h1>Slotify Features</h1>
     <h2 class="typewriter"></h2>
-    <div class="features-container">
-    <div class="feature">
     
-    <div class="container">
-        <header>
-            <div>
-                <h1>Timetable Scheduler</h1>
-                <span style="color:#666;">Manage your weekly class schedule</span>
-            </div>
-            
-        </header>
-        <div class="stats">
-            <div class="stat-card"><h2 id="stat-events">3</h2><span>Classes</span></div>
-            <div class="stat-card"><h2 id="stat-subjects">5</h2><span>Subjects</span></div>
-        </div>
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('timetable')">Timetable</button>
-            <button class="tab" onclick="switchTab('subjects')">Subjects</button>
-            <button class="tab" onclick="switchTab('settings')">Settings</button>
-        </div>
-        <div class="tab-content active" id="tab-timetable">
-            <table id="timetable-table">
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>09:00</th>
-                        <th>10:00</th>
-                        <th>11:00</th>
-                    </tr>
-                </thead>
-                <tbody id="timetable-tbody"></tbody>
-            </table>
-        </div>
-        <div class="tab-content" id="tab-subjects">
-            <div class="subject-list" id="subject-list"></div>
-            <button class="btn add" onclick="openSubjectDialog()">Add Subject</button>
-        </div>
-        <div class="tab-content" id="tab-settings">
-            <div style="text-align:center; padding:40px; color:#999;">
-                <svg height="64" width="64"><circle cx="32" cy="32" r="28" fill="#eee"/><text x="32" y="42" font-size="30" text-anchor="middle" fill="#bbb">&#9881;</text></svg>
-                <h3>Settings Coming Soon</h3>
-                <p>Additional settings and preferences will be available here.</p>
+    <div class="features-container">
+        <div class="feature">
+            <div class="container">
+                <header>
+                    <div>
+                        <h1>Timetable Scheduler</h1>
+                        <span style="color:#666;">Manage your weekly class schedule</span>
+                    </div>
+                </header>
+                <div class="stats">
+                    <div class="stat-card"><h2 id="stat-events">3</h2><span>Classes</span></div>
+                    <div class="stat-card"><h2 id="stat-subjects">5</h2><span>Subjects</span></div>
+                </div>
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('timetable')">Timetable</button>
+                    <button class="tab" onclick="switchTab('subjects')">Subjects</button>
+                    <button class="tab" onclick="switchTab('settings')">Settings</button>
+                </div>
+                <div class="tab-content active" id="tab-timetable">
+                    <div class="table-responsive">
+                        <table id="timetable-table">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>09:00</th>
+                                    <th>10:00</th>
+                                    <th>11:00</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timetable-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-subjects">
+                    <div class="subject-list" id="subject-list"></div>
+                    <button class="btn add" onclick="openSubjectDialog()">Add Subject</button>
+                </div>
+                <div class="tab-content" id="tab-settings">
+                    <div style="text-align:center; padding:40px; color:#999;">
+                        <svg height="64" width="64"><circle cx="32" cy="32" r="28" fill="#eee"/><text x="32" y="42" font-size="30" text-anchor="middle" fill="#bbb">&#9881;</text></svg>
+                        <h3>Settings Coming Soon</h3>
+                        <p>Additional settings and preferences will be available here.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    
     <div class="modal-bg" id="event-modal-bg">
         <form id="event-modal" class="modal" onsubmit="saveEvent(event)">
             <h3 id="event-modal-title">Add Class</h3>
-            <label>
-                Subject:
-                <select id="event-subject" required></select>
-            </label>
-            <label>
-                Day:
-                <select id="event-day" required>
-                    <option>Monday</option>
-                    <option>Tuesday</option>
-                    <option>Wednesday</option>
-                    <option>Thursday</option>
-                    <option>Friday</option>
+            <label>Subject: <select id="event-subject" required></select></label>
+            <label>Day: <select id="event-day" required>
+                    <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+                    <option>Thursday</option><option>Friday</option>
                 </select>
             </label>
-            <label>
-                Time:
-                <select id="event-time" required>
-                    <option value="09:00">09:00</option>
-                    <option value="10:00">10:00</option>
-                    <option value="11:00">11:00</option>
+            <label>Time: <select id="event-time" required>
+                    <option value="09:00">09:00</option><option value="10:00">10:00</option><option value="11:00">11:00</option>
                 </select>
             </label>
-            <label>
-                Duration (hrs):
-                <input type="number" id="event-duration" value="1" min="1" max="4" required>
-            </label>
-            <label>
-                Room:
-                <input type="text" id="event-room" placeholder="Room / Lab">
-            </label>
-            <label>
-                Teacher:
-                <input type="text" id="event-teacher" placeholder="Faculty">
-            </label>
+            <label>Duration (hrs): <input type="number" id="event-duration" value="1" min="1" max="4" required></label>
+            <label>Room: <input type="text" id="event-room" placeholder="Room / Lab"></label>
+            <label>Teacher: <input type="text" id="event-teacher" placeholder="Faculty"></label>
             <div class="modal-actions">
                 <button type="submit" class="btn">Save</button>
                 <button type="button" class="btn cancel" onclick="closeEventDialog()">Cancel</button>
@@ -380,18 +312,9 @@
     <div class="modal-bg" id="subject-modal-bg">
         <form id="subject-modal" class="modal" onsubmit="saveSubject(event)">
             <h3 id="subject-modal-title">Add Subject</h3>
-            <label>
-                Name:
-                <input type="text" id="subject-name" required>
-            </label>
-            <label>
-                Code:
-                <input type="text" id="subject-code" required>
-            </label>
-            <label>
-                Color:
-                <input type="color" id="subject-color" value="#3B82F6" required>
-            </label>
+            <label>Name: <input type="text" id="subject-name" required></label>
+            <label>Code: <input type="text" id="subject-code" required></label>
+            <label>Color: <input type="color" id="subject-color" value="#3B82F6" required></label>
             <div class="modal-actions">
                 <button type="submit" class="btn">Save</button>
                 <button type="button" class="btn cancel" onclick="closeSubjectDialog()">Cancel</button>
@@ -418,7 +341,7 @@
     let editingEvent = null;
     let editingSubject = null;
 
-    // Tabs logic
+    // --- Tab Logic ---
     function switchTab(tab) {
         ['timetable','subjects','settings'].forEach(t => {
             document.getElementById('tab-' + t).classList.toggle('active', t === tab);
@@ -427,7 +350,7 @@
         tabBtns.forEach((btn, idx) => btn.className = 'tab' + (btn.innerText.toLowerCase() === tab ? ' active' : ''));
     }
 
-    // Render timetable (UPDATED FUNCTION)
+    // --- Timetable Rendering ---
     function renderTimetable() {
         const tbody = document.getElementById('timetable-tbody');
         tbody.innerHTML = '';
@@ -448,7 +371,6 @@
                     td.className = 'event event-' + event.subject.toLowerCase().replace(/\s/g, '');
                     td.style.background = event.color;
                     
-                    // Added action buttons for Edit and Delete
                     td.innerHTML = `
                         <div style="font-size:1.05em; font-weight: bold;">${event.subject}</div>
                         <span style="font-size:0.8em; opacity: 0.9;">${event.room||''}<br>${event.teacher||''}</span>
@@ -465,7 +387,7 @@
         document.getElementById('stat-events').textContent = events.length;
     }
 
-    // Render subject list
+    // --- Subject List Rendering ---
     function renderSubjects() {
         const list = document.getElementById('subject-list');
         list.innerHTML = '';
@@ -484,7 +406,7 @@
         document.getElementById('stat-subjects').textContent = subjects.length;
     }
 
-    // Populate subject selector in event modal
+    // --- Helper: Populate Subject Dropdown ---
     function populateSubjectOptions() {
         const select = document.getElementById('event-subject');
         select.innerHTML = '';
@@ -496,7 +418,7 @@
         }
     }
 
-    // Modal logic for events
+    // --- Event (Class) CRUD Logic ---
     function openEventDialog(editId) {
         populateSubjectOptions();
         document.getElementById('event-modal-title').textContent = editId ? 'Edit Class' : 'Add Class';
@@ -545,7 +467,6 @@
             editingEvent.teacher = teacher;
             editingEvent.color = color;
         } else {
-            // Check for potential clashes before adding (simple check on time/day)
             const clash = events.find(e => e.day === day && e.time === time);
             if (clash) {
                 alert(`Clash detected! ${clash.subject} is already scheduled for ${day} at ${time}.`);
@@ -560,11 +481,7 @@
         closeEventDialog();
         renderTimetable();
     }
-    
-    // Event Actions (UPDATED)
-    function editEvent(id) { 
-        openEventDialog(id);
-    }
+    function editEvent(id) { openEventDialog(id); }
     function deleteEvent(id) {
         if (confirm("Are you sure you want to delete this class from the timetable?")) {
             events = events.filter(ev => ev.id !== id);
@@ -572,7 +489,7 @@
         }
     }
 
-    // Modal logic for subjects
+    // --- Subject CRUD Logic ---
     function openSubjectDialog(editId) {
         document.getElementById('subject-modal-title').textContent = editId ? 'Edit Subject' : 'Add Subject';
         document.getElementById('subject-modal-bg').style.display = 'block';
@@ -603,9 +520,8 @@
             editingSubject.name = name;
             editingSubject.code = code;
             editingSubject.color = color;
-            // update matching events
             events.forEach(ev => {
-                if (ev.subject === name) { // Use the potentially new name
+                if (ev.subject === name) {
                     ev.color = color;
                 }
             });
@@ -630,27 +546,14 @@
         }
     }
 
-    // Initialize page
-    renderTimetable();
-    renderSubjects();
-
-    // Click anywhere outside modal to close
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('event-modal-bg')) closeEventDialog();
-        if (event.target === document.getElementById('subject-modal-bg')) closeSubjectDialog();
-    }
-
-    // Typewriter effect
+    // --- Typewriter Effect ---
     const texts = [
-        " Created by Team HexaCore ",
-        " Scheduling made simple.",
-        " Dynamic timetables.",
-        " No more clashes. No more chaos.",
-        " Teachers on leave? We’ve got it covered.",
-        " Smart. Fast. Reliable.",
-        " Because time deserves better management.",
+        "Created by Team HexaCore",
+        "Scheduling made simple.",
+        "Dynamic timetables.",
+        "No more clashes. No more chaos.",
+        "Smart. Fast. Reliable.",
     ];
-
     let count = 0;
     let index = 0;
     let currentText = "";
@@ -679,7 +582,18 @@
         setTimeout(type, isDeleting ? speed / 2 : speed);
     }
 
-    type();
+    // --- Initialization ---
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTimetable();
+        renderSubjects();
+        type();
+    });
+
+    // Click anywhere outside modal to close
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('event-modal-bg')) closeEventDialog();
+        if (event.target === document.getElementById('subject-modal-bg')) closeSubjectDialog();
+    }
     </script>
 </body>
 </html>
